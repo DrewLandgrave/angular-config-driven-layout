@@ -15,6 +15,8 @@ export class ExamplePageComponent implements AfterViewInit {
   @ViewChild('mainColumn', { read: ViewContainerRef, static: false })
   mainColumn: ViewContainerRef;
 
+  viewContainerRefRegistry: {[key: string]: ViewContainerRef} = {};
+
   constructor(
     private envConfigService: EnvConfigService,
     private pageBuilderService: PageBuilderService) {
@@ -22,12 +24,13 @@ export class ExamplePageComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.config = this.envConfigService.getConfig();
+    this.viewContainerRefRegistry['mainColumn'] = this.mainColumn;
     this.buildPage();
   }
 
   private buildPage() {
     Object.keys(this.config.columns).forEach(key => {
-      this.pageBuilderService.buildColumn(this.config.columns[key], this.mainColumn);
+      this.pageBuilderService.buildColumns(this.config.columns[key], this.viewContainerRefRegistry[key]);
     });
   }
 

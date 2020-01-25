@@ -32,13 +32,14 @@ this.config = {
 ```
 
 ## Building the page
+### Reading the config
+Our pages will have acces to the `EnvConfigService` and the `PageBuilderService`. The pages should iterrate through the columns of the configuration and pass in the `ViewContainerRef` where
 ### The Wrapper component
 The wrapper component for this example provides a mechanism to instantiate our custom web components. It provides an insertion point to put our component and stores the ElementRef for later use
 
 ```ts
   createElement(config) {
     this.element = document.createElement(config.tag);
-
     this.element.label = config.label;
     this.insertionPoint.element.nativeElement.append(this.element);
     this.elementRef = new ElementRef(this.element);

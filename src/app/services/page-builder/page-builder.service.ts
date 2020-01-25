@@ -4,15 +4,15 @@ import { ViewContainerRef, Injectable, ComponentRef } from '@angular/core';
 
 @Injectable({
     providedIn: 'root'
-  })
+})
 export class PageBuilderService {
     wrapperRegistry: { [key: string]: ComponentRef<WrapperComponent> } = {};
 
     constructor(private componentWrapperLoaderService: ComponentWrapperLoaderService) { }
 
-    buildColumn(column: any, viewContainerRef: ViewContainerRef) {
-        column.forEach(config => {
-            const panel = this.componentWrapperLoaderService.loadComponent(viewContainerRef);
+    buildColumns(columnConfig: any, viewContainer: ViewContainerRef) {
+        columnConfig.forEach(config => {
+            const panel = this.componentWrapperLoaderService.loadComponent(viewContainer);
             panel.instance.createElement(config);
             config.children.forEach(childConfig => {
                 const wrapperComponentComponentRef: ComponentRef<WrapperComponent> =

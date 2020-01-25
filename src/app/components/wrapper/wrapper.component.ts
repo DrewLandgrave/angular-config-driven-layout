@@ -18,7 +18,6 @@ export class WrapperComponent implements OnInit {
 
   createElement(config) {
     this.element = document.createElement(config.tag);
-
     this.element.label = config.label;
     this.insertionPoint.element.nativeElement.append(this.element);
     this.elementRef = new ElementRef(this.element);
