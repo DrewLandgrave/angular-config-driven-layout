@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { CustomFormComponent } from '../../interfaces/custom-form-component.interface';
 
 @Component({
   selector: 'advtech-wrapper',
@@ -6,14 +7,20 @@ import { Component, OnInit, ViewChild } from '@angular/core';
   styleUrls: ['./wrapper.component.scss']
 })
 export class WrapperComponent implements OnInit {
-  @ViewChild(HTMLElement, { static: true })
-  public element: HTMLElement;
-  constructor(private config: string) { }
+  public element: CustomFormComponent;
+  public elementRef: ElementRef;
+
+  @ViewChild('insertionPoint', {read: ViewContainerRef, static: true })
+  public insertionPoint: ViewContainerRef;
 
   ngOnInit() {
   }
 
-  loadChildren(config: any) {
+  createElement(config) {
+    this.element = document.createElement(config.tag);
 
+    this.element.label = config.label;
+    this.insertionPoint.element.nativeElement.append(this.element);
+    this.elementRef = new ElementRef(this.element);
   }
 }

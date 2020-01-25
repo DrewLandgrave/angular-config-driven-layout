@@ -1,34 +1,44 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {AfterViewInit, Component, ComponentRef, ViewChild, ViewContainerRef} from '@angular/core';
 import { EnvConfigService } from '../../services/env-config/env-config.service';
 import { ComponentWrapperLoaderService } from '../../services/component-wrapper-loader/component-wrapper-loader.service';
-import { MainColumnDirective } from '../../directives/main-column/main-column.directive';
+import {WrapperComponent} from '../wrapper/wrapper.component';
 
 @Component({
   selector: 'app-example-page',
   templateUrl: './example-page.component.html',
   styleUrls: ['./example-page.component.scss']
 })
-export class ExamplePageComponent implements OnInit {
+export class ExamplePageComponent implements AfterViewInit {
   config: any;
+  wrapperRegistry: { [key: string]: ComponentRef<WrapperComponent> } = {};
 
-  constructor(private envConfigService: EnvConfigService) { }
+  @ViewChild('mainColumn', {read: ViewContainerRef, static: false})
+    mainColumn: ViewContainerRef;
 
-  ngOnInit() {
-    this.config = this.envConfigService.getConfig();
-    this.buildPage();
+    constructor(
+      private envConfigService: EnvConfigService,
+      private componentWrapperLoaderService: ComponentWrapperLoaderService) {
   }
 
+  ngAfterViewInit(): void {
+    this.config = this.envConfigService.getConfig();
+    this.buildPage();
+}
+
   private buildPage() {
-    this.config.mainColumn.forEach(config => {
-      const panel = document.createElement(config.tag);
-      panel.panelTitle = config.panelTitle;
+    this.config.columns.mainColumn.forEach(config => {
+      const panel = this.componentWrapperLoaderService.loadComponent(this.mainColumn);
+      panel.instance.createElement(config);
       config.children.forEach(childConfig => {
-        const domElement = document.createElement(childConfig.tag);
-        domElement.label = childConfig.label;
-        panel.append(domElement);
+          const wrapperComponentComponentRef: ComponentRef<WrapperComponent> =
+              this.componentWrapperLoaderService.loadComponent(panel.instance.insertionPoint);
+          wrapperComponentComponentRef.instance.createElement(childConfig);
+          this.wrapperRegistry[childConfig.formName] = wrapperComponentComponentRef;
+          (panel.instance.element as any).insertChild(wrapperComponentComponentRef.hostView);
+          const domElement = document.createElement(childConfig.tag);
+          domElement.label = childConfig.label;
       });
-      document.body.append(panel);
-    });
+  });
   }
 
 }

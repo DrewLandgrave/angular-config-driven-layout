@@ -1,5 +1,5 @@
-import { Injectable, ComponentFactoryResolver, ViewContainerRef } from '@angular/core';
-import { WrapperComponent } from '../..//components/wrapper/wrapper.component';
+import {Injectable, ComponentFactoryResolver, ViewContainerRef, ComponentRef} from '@angular/core';
+import { WrapperComponent } from '../../components/wrapper/wrapper.component';
 
 @Injectable({
   providedIn: 'root'
@@ -7,11 +7,8 @@ import { WrapperComponent } from '../..//components/wrapper/wrapper.component';
 export class ComponentWrapperLoaderService {
   constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
 
-  loadComponent(viewContainerRef: ViewContainerRef, config: any): WrapperComponent {
+  loadComponent(viewContainerRef: ViewContainerRef): ComponentRef<WrapperComponent> {
       const factory = this.componentFactoryResolver.resolveComponentFactory(WrapperComponent);
-      const componentRef = viewContainerRef.createComponent(factory);
-      const instance: WrapperComponent = componentRef.instance;
-
-      return instance;
+      return viewContainerRef.createComponent(factory);
   }
 }
