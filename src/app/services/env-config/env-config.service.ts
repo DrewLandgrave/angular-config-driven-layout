@@ -7,7 +7,8 @@ import { HttpClient } from '@angular/common/http';
 export class EnvConfigService {
 
   private config: any = {
-    mainColumn:
+    columns: {
+      mainColumn:
       [
         {
           tag: 'advtech-panel',
@@ -45,8 +46,9 @@ export class EnvConfigService {
             }
 
           ]
-        }
+        },
       ]
+    }
   };
 
   constructor(private httpClient: HttpClient) { }
