@@ -26,6 +26,7 @@ const appRoutes: Routes = [
     WrapperComponent,
     MainColumnDirective,
   ],
+  entryComponents: [WrapperComponent],
   imports: [
     BrowserModule,
     HttpClientModule,

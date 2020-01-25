@@ -4,7 +4,7 @@
       {{label}}
     </mat-panel-title>
   </mat-expansion-panel-header>
-  <div class="panel-body">
-    <ng-content></ng-content>
-  </div>
+    <div #insertionPoint class="insertion-point">
+      <ng-content></ng-content>
+    </div>
 </mat-expansion-panel>

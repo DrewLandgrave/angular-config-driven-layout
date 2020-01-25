@@ -26,7 +26,7 @@ export class ExamplePageComponent implements AfterViewInit {
 }
 
   private buildPage() {
-    this.config.columns.mainColumn.forEach(config => {
+    this.config.mainColumn.forEach(config => {
       const panel = this.componentWrapperLoaderService.loadComponent(this.mainColumn);
       panel.instance.createElement(config);
       config.children.forEach(childConfig => {
