@@ -1,0 +1,7 @@
+:host {
+  background: orange;
+  .panel-body {
+    display: flex;
+    flex-direction: column;
+  }
+}
